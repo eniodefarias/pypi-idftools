@@ -164,12 +164,12 @@ C:\Users\%USERNAME%\AppData\Local\Programs\Python\Python39\python.exe -m venv .v
 ### instalar os requirements.txt na mão
 #### usando o gitbash
 ```bash     
-cat requirements.txt|sort|uniq | xargs -n 1 .venv/Scripts/pip3.exe install ; .venv/Scripts/python.exe -m pip install --upgrade pip
+cat requirements.txt| grep -v "#"|sort|uniq | xargs -n 1 .venv/Scripts/pip3.exe install ; .venv/Scripts/python.exe -m pip install --upgrade pip
 ```
 
 #### usando o shell do linux
 ```bash    
-cat requirements.txt|sort|uniq | xargs -n 1 .venv/bin/pip install ; .venv/bin/python3 -m pip install --upgrade pip
+cat requirements.txt| grep -v "#"|sort|uniq | xargs -n 1 .venv/bin/pip install ; .venv/bin/python3 -m pip install --upgrade pip
 ```
 
 ### atualizar modulos no Gitbash
