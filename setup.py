@@ -23,7 +23,7 @@ setup(
     author_email="eniodefarias@gmail.com",
     author="eniodefarias",
     version="0.1.4",
-    url="http://ideiadofuturo.com.br/pypi",
+    url="https://github.com/eniodefarias/pypi-idftools",
     description="Um pacote com alguns utilitarios uteis",
     py_modules=["utilities", "driversfactory", "certificate"],
     package_dir={"": "idftools"}

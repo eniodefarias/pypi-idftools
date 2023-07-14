@@ -38,3 +38,4 @@ Pillow
 opencv-python
 img2pdf
 xlsxwriter
+setuptools
