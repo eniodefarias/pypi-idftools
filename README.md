@@ -44,6 +44,7 @@ Pillow
 opencv-python
 img2pdf
 xlsxwriter
+wheel
 ```
 
 ### dica para instalar os pre-requirements.txt na mão
@@ -116,16 +117,21 @@ twine upload --skip-existing dist/*
 
 
 ### iniciar o repo
-    git init
-    git remote add origin https://github.com/eniodefarias/pypi-idftools.git
-
+```bash
+git init
+git remote add origin https://github.com/eniodefarias/pypi-idftools.git
+```
 
 
 ### puxar "git pull" da branch 
-    git pull -f origin main
+```bash    
+git pull -f origin main
+```
 
 ### trocar branch main
-    git branch main ; git checkout main 
+```bash    
+git branch main ; git checkout main 
+```
 
 ### gerar o venv
 
@@ -133,46 +139,67 @@ twine upload --skip-existing dist/*
  - [www.python.org](https://www.python.org/downloads/release/python-380/)
 
 #### no windows, no cmd do DOS:
-    C:\Users\%USERNAME%\AppData\Local\Programs\Python\Python39\python.exe -m venv .venv
+```cmd    
+C:\Users\%USERNAME%\AppData\Local\Programs\Python\Python39\python.exe -m venv .venv
+```
 
 #### no windows, no gitbash:
-    /c/Users/$(whoami)/AppData/Local/Programs/Python/Python39/python.exe -m venv .venv
+```bash    
+/c/Users/$(whoami)/AppData/Local/Programs/Python/Python39/python.exe -m venv .venv
+```
 
 #### no linux, no shell
-    /home/$(whoami)/.pyenv/shims/python3 -m venv .venv
-
-### enviar "git push" da branch
-    git add . ; git add * ; git commit -m "fix: ajuste de log debug com prints" ; git push -f origin main
+```bash    
+/home/$(whoami)/.pyenv/shims/python3 -m venv .venv
+```
 
 ### instalar os requirements.txt na mão
 #### usando o gitbash
-     cat requirements.txt|sort|uniq | xargs -n 1 .venv/Scripts/pip3.exe install ; .venv/Scripts/python.exe -m pip install --upgrade pip
+```bash     
+cat requirements.txt|sort|uniq | xargs -n 1 .venv/Scripts/pip3.exe install ; .venv/Scripts/python.exe -m pip install --upgrade pip
+```
 
 #### usando o shell do linux
-    cat requirements.txt|sort|uniq | xargs -n 1 .venv/bin/pip install ; .venv/bin/python3 -m pip install --upgrade pip
+```bash    
+cat requirements.txt|sort|uniq | xargs -n 1 .venv/bin/pip install ; .venv/bin/python3 -m pip install --upgrade pip
+```
 
 ### atualizar modulos no Gitbash
-    .venv/Scripts/python.exe -m pip install PyInstaller
-    .venv/Scripts/python.exe -m pip install --upgrade pip
-    .venv/Scripts/python.exe -m pip install --upgrade idftools
+```bash    
+.venv/Scripts/python.exe -m pip install PyInstaller
+.venv/Scripts/python.exe -m pip install --upgrade pip
+.venv/Scripts/python.exe -m pip install --upgrade idftools
+```
 
+### enviar "git push" da branch
+```bash    
+git add . ; git add * ; git commit -m "fix: ajuste de log debug com prints" ; git push -f origin main
+```
 
 ## executar:
 
 ### terminal gitbash
-     .venv/Scripts/python.exe app.py
+```bash     
+.venv/Scripts/python.exe app.py
+```
 
 ### terminal shell do linux:
-    .venv/bin/python3 app.py
+```bash    
+.venv/bin/python3 app.py
+```
 
 ## compilar:
  - lembre-se de alterar o nome do executavel **".exe"** e script python **".py"** de acordo com a versão e script que vai compilar
 
 ### terminal do pycharm
-    .venv/bin/python3  -m PyInstaller --onefile --paths .\venv\Lib\site-packages --icon=icone\logo_circle.ico -n app .\app.py ; rm app.exe ; mv dist/app.exe .
+```bash    
+.venv/bin/python3  -m PyInstaller --onefile --paths .\venv\Lib\site-packages --icon=icone\logo_circle.ico -n app .\app.py ; rm app.exe ; mv dist/app.exe .
+```
 
 ### terminal do gitbash
-    set UPX= --ultra-brute --best --compress-icons#0 ; time .venv/Scripts/python.exe -m PyInstaller --upx-dir=./ --noconfirm --onefile --paths .venv/Lib/site-packages --icon=icone/logo.ico -n  app app.py ; rm app.exe ; mv dist/app.exe . ; ls -latrh *.exe
+```bash
+set UPX= --ultra-brute --best --compress-icons#0 ; time .venv/Scripts/python.exe -m PyInstaller --upx-dir=./ --noconfirm --onefile --paths .venv/Lib/site-packages --icon=icone/logo.ico -n  app app.py ; rm app.exe ; mv dist/app.exe . ; ls -latrh *.exe
+```
     
 
 ---
