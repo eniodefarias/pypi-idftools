@@ -160,10 +160,10 @@ twine upload --skip-existing dist/*
 ## executar:
 
 ### terminal gitbash
-     .venv/Scripts/python.exe  sv000_main.py
+     .venv/Scripts/python.exe app.py
 
 ### terminal shell do linux:
-    .venv/bin/python3 sv000_main.py
+    .venv/bin/python3 app.py
 
 ## compilar:
  - lembre-se de alterar o nome do executavel **".exe"** e script python **".py"** de acordo com a versão e script que vai compilar
