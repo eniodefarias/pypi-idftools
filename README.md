@@ -1,3 +1,8 @@
+<p align="center">
+  <img src="http://ideiadofuturo.com.br/img/logo_ideia.png" width="120" title="supervisão"  alt="Supervisao Contabilidade e Consultoria">  
+</p>
+
+
 # I.d.F. tools
 
  - [https://pypi.org/project/idftools/](https://pypi.org/project/idftools/)
@@ -98,6 +103,9 @@ idftools.certificate.another_function()
 # criando e enviando para o PyPi
 ```bash
 .venv/bin/python3 -m pip install wheel
+```
+
+```bash
 rm -rf dist/
 .venv/bin/python3 setup.py sdist bdist_wheel
 
@@ -173,7 +181,7 @@ cat requirements.txt|sort|uniq | xargs -n 1 .venv/bin/pip install ; .venv/bin/py
 
 ### enviar "git push" da branch
 ```bash    
-git add . ; git add * ; git commit -m "fix: ajuste de log debug com prints" ; git push -f origin main
+git add . ; git add * ; git commit -m "update: ajuste" ; git push -f origin main
 ```
 
 ## executar:
@@ -203,3 +211,7 @@ set UPX= --ultra-brute --best --compress-icons#0 ; time .venv/Scripts/python.exe
     
 
 ---
+
+<p align="center">
+  <img src="http://ideiadofuturo.com.br/img/logo_ideia.png" width="120" title="supervisão"  alt="Supervisao Contabilidade e Consultoria">  
+</p>

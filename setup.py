@@ -16,13 +16,13 @@ long_description = (this_directory / "README.md").read_text()
 print(f'long_description={long_description}')
 
 setup(
+    version="0.1.6",
     long_description=long_description,
     long_description_content_type='text/markdown',
     install_requires=requirements,
     name="idftools",
     author_email="eniodefarias@gmail.com",
     author="eniodefarias",
-    version="0.1.4",
     url="https://github.com/eniodefarias/pypi-idftools",
     description="Um pacote com alguns utilitarios uteis",
     py_modules=["utilities", "driversfactory", "certificate"],
