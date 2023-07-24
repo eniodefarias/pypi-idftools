@@ -1,27 +1,28 @@
 # -*- coding: utf-8 -*-
 #coding: utf-8
-import socket
 import sys
-sys.path.append("../")
-from itertools import cycle
+sys.path.append("../../")
+import os
 import pandas as pd
-import winreg
 import csv
 import re
 import json
-import subprocess
-import os
-import wincertstore
-import base64
 import ssl
-import os
-from cryptography import x509
-from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives import hashes
-from cryptography.x509.oid import ExtensionOID
 import time
 import json
 import re
+import subprocess
+
+if os.name == 'nt':
+    from itertools import cycle
+    import socket
+    import winreg
+    import wincertstore
+    import base64
+    from cryptography import x509
+    from cryptography.hazmat.backends import default_backend
+    from cryptography.hazmat.primitives import hashes
+    from cryptography.x509.oid import ExtensionOID
 
 
 class Certificate:
@@ -117,8 +118,6 @@ class Certificate:
                     if len(list_Subjec) > 1 and len(list_Issuer) > 1 and cnpj != 'Error' and cnpj != 'Null':
                         print(f'\n      CNPJ:"{cnpj}" =  adicionando "{cert.get_name()}" ao json ')
                         # print(cert.get_name())
-                        #print("            🏢 Issuer: ", issuer)
-                        #print("            🪪 Subject:", subject)
                         print("              Issuer: ", issuer)
                         print("              Subject:", subject)
 
@@ -237,78 +236,78 @@ class Certificate:
         xxxresultado = ''' 
         My "Pessoal"
         ================ Certificado 0 ================
-        Número de Série: 6f8c4e2158ab119142c358e1aef32071867ea4ff
-        Emissor: CN=teste teste one4-01, O=one4teste, L=florianopolis, S=santa-catarina, C=BR
+        Número de Série: 6f8c4a4ff
+        Emissor: CN=teste teste teste4-01, O=4teste, L=florianopolis, S=santa-catarina, C=BR
          NotBefore: 11/11/2022 09:55
          NotAfter: 08/11/2032 09:55
         Requerente: CN=teste teste one4-01, O=one4teste, L=florianopolis, S=santa-catarina, C=BR
         Assinatura coincide com Chave pública
         Certificado raiz: requerente coincide com o emissor
-        Hash Cert(sha1): cf543ac5675c33bdf67c08b04640572e02e98921
+        Hash Cert(sha1): cf5438921
         Nenhuma informação de provedor de chave
         Não é possível localizar o certificado e a chave privada para decodificação.
     
         ================ Certificado 1 ================
-        Número de Série: 79d0e43b1b8f4a20
+        Número de Série: 720
         Emissor: CN=AC ONLINE BRASIL v5, OU=Autoridade Certificadora VALID - AC VALID v5, O=ICP-Brasil, C=BR
          NotBefore: 08/06/2022 10:39
          NotAfter: 08/06/2023 10:39
-        Requerente: CN=GV CLINICAS MEDICINA DO TRABALHO LTDA, OU=15490917000199, OU=VALID, OU=Pessoa Juridica A1, OU=AC ONLINE BRASIL, O=ICP-Brasil, L=GOVERNADOR VALADARES, S=MG, C=BR
+        Requerente: CN=MEDICINA DO TRABALHO LTDA, OU=15199, OU=VALID, OU=Pessoa Juridica A1, OU=AC ONLINE BRASIL, O=ICP-Brasil, L=GOVERNADOR VALADARES, S=MG, C=BR
         Certificado não raiz
-        Hash Cert(sha1): c8c2cdce6e5ada28d037acbcbd8dc22a3cca954c
+        Hash Cert(sha1): c8954c
         Nenhuma informação de provedor de chave
         Não é possível localizar o certificado e a chave privada para decodificação.
     
         ================ Certificado 2 ================
-        Número de Série: 6213d6b2aa248b5f
+        Número de Série: 62b5f
         Emissor: CN=AC ONLINE RFB v5, OU=Secretaria da Receita Federal do Brasil - RFB, O=ICP-Brasil, C=BR
          NotBefore: 11/03/2022 16:40
          NotAfter: 11/03/2023 16:40
-        Requerente: CN=M3 SISTEMAS DE INFORMATICA LTDA:07070596000145, OU=15490917000199, OU=Presencial, OU=AR E-UTIL TECNOLOGIA E SEGURANCA, OU=RFB e-CNPJ A1, OU=Secretaria da Receita Federal do Brasil - RFB, O=ICP-Brasil, L=GOVERNADOR VALADARES, S=MG, C=BR
+        Requerente: CN=M3 SISTEMAS LTDA:0000145, OU=15199, OU=Presencial, OU=AR E-UTIL TECNOLOGIA E SEGURANCA, OU=RFB e-CNPJ A1, OU=Secretaria da Receita Federal do Brasil - RFB, O=ICP-Brasil, L=GOVERNADOR VALADARES, S=MG, C=BR
         Certificado não raiz
-        Hash Cert(sha1): c8b50fdbcdeb74e28fafcb3b1c3d2d4f7ec6b4cb
+        Hash Cert(sha1): c8b4cb
         Nenhuma informação de provedor de chave
         Não é possível localizar o certificado e a chave privada para decodificação.
     
         ================ Certificado 3 ================
-        Número de Série: 2bf7c02e7b1c0a7d048e6a885836271b
+        Número de Série: 2b1b
         Emissor: CN=AC Certisign RFB G5, OU=Secretaria da Receita Federal do Brasil - RFB, O=ICP-Brasil, C=BR
          NotBefore: 11/11/2022 18:00
          NotAfter: 11/11/2023 18:00
-        Requerente: CN=ENIO RICARDO DE FARIAS:05852252905, OU=(em branco), OU=RFB e-CPF A1, OU=Secretaria da Receita Federal do Brasil - RFB, OU=01554285000175, OU=VideoConferencia, O=ICP-Brasil, C=BR
+        Requerente: CN=ENIOS:0505, OU=(em branco), OU=RFB e-CPF A1, OU=Secretaria da Receita Federal do Brasil - RFB, OU=0155475, OU=VideoConferencia, O=ICP-Brasil, C=BR
         Certificado não raiz
-        Hash Cert(sha1): 9921ef6b769eaaca5b9aec576b32b45ca2162ce3
-          Contêiner da chave = enio ricardo de farias:05852252905 2022-11-11 18:00:19
-          Nome de contêiner exclusivo: f2e71e8c370871e4ecf29023e092069b_873cc718-d482-42dd-ac95-f7c4077d9c1c
+        Hash Cert(sha1): 9921ef162ce3
+          Contêiner da chave = enio ricardo de farias:05 2022-11-11 18:00:19
+          Nome de contêiner exclusivo: fc1c
           Provider = Microsoft Enhanced Cryptographic Provider v1.0
         Êxito no teste de criptografia
     
         ================ Certificado 4 ================
-        Número de Série: 02b3c8beae762145
-        Emissor: CN=62fd0a80-8fae-4f2f-b045-cc8d3c8c596a
+        Número de Série: 02145
+        Emissor: CN=62596a
          NotBefore: 11/11/2022 03:38
          NotAfter: 11/11/2023 15:38
-        Requerente: CN=62fd0a80-8fae-4f2f-b045-cc8d3c8c596a
+        Requerente: CN=62fd8d3c8c596a
         Assinatura coincide com Chave pública
         Certificado raiz: requerente coincide com o emissor
-        Hash Cert(sha1): 4cde1906a914bb84384b07b3084d6e36d94b0d1b
-          Contêiner da chave = cebb9cfb-4109-4ec6-852e-4afe0fed4a81
-          Nome de contêiner exclusivo: 5d41a37d774459c06848c304b482b66e_873cc718-d482-42dd-ac95-f7c4077d9c1c
+        Hash Cert(sha1): 4cd1b
+          Contêiner da chave = ceb1
+          Nome de contêiner exclusivo: 5d4c9c1c
           Provider = Microsoft Software Key Storage Provider
         A chave privada NÃO é exportável
         Teste de assinatura aprovado
     
         ================ Certificado 5 ================
-        Número de Série: 5db5dbb84a97ca3b
-        Emissor: CN=479ad65e-b1bc-4d3a-b991-46813943b684
+        Número de Série: 5a3b
+        Emissor: CN=47684
          NotBefore: 11/11/2022 03:38
          NotAfter: 11/11/2023 15:38
-        Requerente: CN=479ad65e-b1bc-4d3a-b991-46813943b684
+        Requerente: CN=479a3943b684
         Assinatura coincide com Chave pública
         Certificado raiz: requerente coincide com o emissor
-        Hash Cert(sha1): 04a87fcc7264a21a7c704ce817aeabcce2d3eb6f
-          Contêiner da chave = 8555a3d5-5b15-4adb-a8a8-0084297574f2
-          Nome de contêiner exclusivo: 0443162fd2d330e768099655955bed03_873cc718-d482-42dd-ac95-f7c4077d9c1c
+        Hash Cert(sha1): 04ae2d3eb6f
+          Contêiner da chave = 85574f2
+          Nome de contêiner exclusivo: 0447d9c1c
           Provider = Microsoft Software Key Storage Provider
         A chave privada NÃO é exportável
         Teste de assinatura aprovado
@@ -745,6 +744,83 @@ class Certificate:
 
     def cpf11digits(self, cpf):
         return str('{:0>11}'.format(self.somente_numeros(cpf)))   #cpf com 11 digito e somente numeros (deve ser passado como string)
+
+
+    def criar_registro_chrome_winreg(self, dire):
+
+        # self.logger.debug('b00 1 criar_registro_chrome_winreg')
+
+        sub_key = r'1'
+
+        #key_to_read = r'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Google\Chrome\AutoSelectCertificateForUrls'
+        raiz_reg = r'HKEY_LOCAL_MACHINE'
+        key_to_read = r'SOFTWARE\Policies\Google\Chrome\AutoSelectCertificateForUrls'
+
+        # self.logger.debug('b00 2 criar_registro_chrome_winreg')
+        # a = sys.argv[0]
+        # pat = os.path.abspath(a)
+        # dire = os.path.dirname(a)
+        full = os.path.join(dire, '02-create_new_registry_windows_runas.exe')
+        temp1 = os.path.join(dire, 'temp.txt')
+        # self.logger.debug('b00 3 criar_registro_chrome_winreg')
+        temp = os.path.abspath(temp1)
+        # self.logger.debug('b1')
+
+        try:
+            print(f'primeiro verifica se o registro existe')
+            # self.logger.debug('b2')
+            key = winreg.HKEY_LOCAL_MACHINE
+            reg = winreg.ConnectRegistry(None, key)
+            k = winreg.OpenKey(reg, key_to_read)
+            # self.logger.debug('b3')
+            print(f'registro lido: {k}')
+
+            # self.logger.debug('b4')
+            valuex = winreg.QueryValueEx(k, sub_key)
+            print(f'valuex: {valuex}')
+            print(f'\nOK. Registro já existe')
+            # criar = winreg.CreateKeyEx(k, sub_keyB, reserved=0, access=winreg.KEY_WRITE)  # criar = winreg.CreateKeyEx(k, sub_keyB, reserved=0, access=winreg.KEY_ALL_ACCESS)  # criar = winreg.CreateKeyEx(k, sub_keyB, reserved=1, access=winreg.REG_SZ)  # criar = winreg.CreateKeyEx(k, sub_keyB, reserved=1, access=winreg.KEY_ALL_ACCESS)
+            # self.logger.debug('b5')
+            erro_hkey = False
+
+        except Exception as e:
+            # self.logger.debug('b6')
+            print(f'erro registro não encontrado: {e}')
+            erro_hkey = True
+
+        print(f'b7 - erro_hkey={erro_hkey}')
+
+        if erro_hkey:
+            try:
+                print(f'\nIniciando tentativa de criar o registro. È necessário ter permissão de ADMIN')
+                # ASADMIN = 'asadmin'
+                # user = sys.argv[-1]
+                # userb = sys.argv[1:]
+                # if sys.argv[-1] != ASADMIN:
+
+                # fulli = f' open {full} '
+
+                script = full
+                paqms2 = f'-k "{raiz_reg}\\{key_to_read}" -s "{sub_key}" -t "REG_SZ" -v "0" -f "{temp}"'
+                print(f'paqms2:     {paqms2}      ')
+                params = ' '.join([paqms2])
+
+                # HINT: http://timgolden.me.uk/pywin32-docs/shell__ShellExecuteEx_meth.html
+                result = shell.ShellExecuteEx(lpVerb='runas', nShow=win32con.SW_SHOWNORMAL, fMask=shellcon.SEE_MASK_NOCLOSEPROCESS, lpFile=f'{script}', lpParameters=params)
+
+                procHandle = result['hProcess']
+                obj = win32event.WaitForSingleObject(procHandle, win32event.INFINITE)
+                rc = win32process.GetExitCodeProcess(procHandle)
+                f = open(temp)
+                lines = f.read()
+                print(f'lines: {lines}')
+                f.close()
+                linhas = lines.replace('\n', ' ').strip('\n').strip(' ')
+
+                print(f'Resultado: {linhas}')
+
+            except Exception as e:
+                print(f'erro ao criar registro usando system: {e}')
 
 
 #bot = Certificate()

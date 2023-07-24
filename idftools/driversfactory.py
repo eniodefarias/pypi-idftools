@@ -1,36 +1,28 @@
 # -*- coding: utf-8 -*-
 #coding: utf-8
 import sys
-sys.path.append("..")
+sys.path.append("../..")
 import io, re, string, os
 import time
 #import pandas as pd
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver import DesiredCapabilities
+from selenium.webdriver.chrome.service import Service
 import configparser
-#from src.util.utilities2 import Utilities
-from utilities import Utilities
 import sys
 import os
 # import undetected_chromedriver as uc
-
 from webdriver_manager.chrome import ChromeDriverManager
 
 class DriverFactory:
-
-
     #HINT: set another dir to chrome:  https://stackoverflow.com/questions/45500606/set-chrome-browser-binary-through-chromedriver-in-python
-
-
-
     '''
     Retorna webdriver
     Parâmetros: chrome, firefox, phantomjs
     '''
     # def create_driver(self, type, headless=False):
     #     self.create_driver(type, headless, None)
-
 
     # def create_driver(self, type, headless=False, path_to_download=None, install_extension=None, largura=1440, altura=900):
     def create_driver(self, type, headless=False, path_to_download=None, install_extension=None, largura=800, altura=800, kiosk=False, nome_robo_exec='bot', robo_pid_exec='0', logger=None, cert_digital=False, path_cert_digital=None, senha_cert_digital=None, list_url_cert_digital=[], scale_factor=1):
@@ -311,7 +303,7 @@ class DriverFactory:
                     with io.open(pathc, "r+b") as fh:
                         print('dentro do io')
                         for line in iter(lambda: fh.readline(), b""):
-                            print(f'dentro for line: ')
+                            # print(f'dentro for line: ')
                             if b"cdc_" in line:
                                 print(f'dentro if cdc line:')
                                 fh.seek(-len(line), 1);
@@ -320,8 +312,22 @@ class DriverFactory:
                                 print("linha cdc_ encontrada e alterada com sucesso")
                 except Exception as e:
                     print(f'ERROR: no cdc: {e}')
-                print('criando driver')
-                driver = webdriver.Chrome(executable_path=pathc, chrome_options=chrome_options, desired_capabilities=capabilities)  # Optional argument, if not specified will search path.
+                print(f'criando driver pathc={pathc}')
+
+                try:
+                    print(f'criando driver pelo metodo 1')
+                    driver = webdriver.Chrome(executable_path=f'{pathc}', chrome_options=chrome_options, desired_capabilities=capabilities)  # Optional argument, if not specified will search path.
+
+                except Exception as e:
+                    print(f'deu erro no metodo 1: {e}')
+                    try:
+                        print(f'criando driver pelo metodo 2 com service')
+                        service = Service(executable_path=pathc, chrome_options=chrome_options, desired_capabilities=capabilities)
+                        driver = webdriver.Chrome(service=service)  # Optional argument, if not specified will search path.
+                    except Exception as e:
+                        print(f'deu erro no metodo 2: {e}')
+                        raise Exception(f'Agora lascou, deu erro tambem no metodo service')
+
                 print('depois driver')
                 # driver = uc.drivera
 
