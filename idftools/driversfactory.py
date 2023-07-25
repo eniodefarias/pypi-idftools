@@ -14,6 +14,12 @@ import sys
 import os
 # import undetected_chromedriver as uc
 from webdriver_manager.chrome import ChromeDriverManager
+import datetime
+
+from colorama import Fore, Back, Style
+if os.name == 'nt':
+    from colorama import just_fix_windows_console
+    just_fix_windows_console()
 
 class DriverFactory:
     #HINT: set another dir to chrome:  https://stackoverflow.com/questions/45500606/set-chrome-browser-binary-through-chromedriver-in-python
@@ -25,6 +31,23 @@ class DriverFactory:
     #     self.create_driver(type, headless, None)
 
     # def create_driver(self, type, headless=False, path_to_download=None, install_extension=None, largura=1440, altura=900):
+
+    def printa(self, tipo='', msg=''):
+        msg = msg.replace('\n', '// ').replace('  ', ' ').replace('  ', ' ').replace('  ', ' ').replace('  ', ' ').replace('  ', ' ').replace('  ', ' ')
+        agora = datetime.datetime.today().strftime("%Y/%m/%d %H:%M:%S")
+        if tipo == 'error':
+            print(Fore.RED + f'{agora} | {tipo} | {msg}' + Style.RESET_ALL)
+        elif tipo == 'debug':
+            print(Fore.MAGENTA + f'{agora} | {tipo} | {msg}' + Style.RESET_ALL)
+        elif tipo == 'warning':
+            print(Fore.YELLOW + f'{agora} | {tipo} | {msg}' + Style.RESET_ALL)
+        elif tipo == 'info':
+            print(Fore.CYAN + f'{agora} | {tipo} | {msg}' + Style.RESET_ALL)
+        elif tipo == 'critical':
+            print(Back.RED + f'{agora} | {tipo} | {msg}' + Style.RESET_ALL)
+        else:
+            print(f'{agora} | {tipo} | {msg}')
+
     def create_driver(self, type, headless=False, path_to_download='TMP', install_extension=None, largura=800, altura=800, kiosk=False, nome_robo_exec='bot', robo_pid_exec='0', logger=None, cert_digital=False, path_cert_digital=None, senha_cert_digital=None, list_url_cert_digital=[], scale_factor=1, set_page_load_timeout=45, implicitly_wait=2, posX=0, posY=0):
         try:
 
@@ -132,7 +155,7 @@ class DriverFactory:
                 # print('chrome 002')
 
                 if cert_digital and len(list_url_cert_digital) > 0:
-                    print('entrou no cert digital')
+                    self.printa('info', 'entrou no cert digital')
                     qtde_list_url_cert_digital = len(list_url_cert_digital)
 
                     chrome_options.add_argument("--ssl-client-certificate-file=" + path_cert_digital)
@@ -149,9 +172,9 @@ class DriverFactory:
                         chrome_options.add_argument("--auto-select-certificate-for-urls=" + url_um_cert)
                     else:
                         # self.logger.error(f'erro ao tentar abrir urls {list_url_cert_digital} com certificado digital')
-                        print(f'erro ao tentar abrir urls {list_url_cert_digital} com certificado digital')
+                        self.printa('error', f'erro ao tentar abrir urls {list_url_cert_digital} com certificado digital')
                 else:
-                    print('                      Iniciando webdriver chrome ')
+                    self.printa('info', '                      Iniciando webdriver chrome ')
                     # print('chrome 003')
                     # Configuração para ceitar qualquer certificados
                     # capabilities = DesiredCapabilities.CHROME.copy()
@@ -255,7 +278,7 @@ class DriverFactory:
                     pass
                 prefs['download.default_directory'] = path_to_download
                 prefs['download.prompt_for_download'] = False
-                print(f'                         path_to_download={path_to_download}')
+                self.printa('debug', f'                         path_to_download={path_to_download}')
 
                 # print('create_driver: chrome 008')
 
@@ -311,7 +334,7 @@ class DriverFactory:
                 # print(f'saida_comando: {saida_comando}')
 
                 pathc = os.path.abspath(chromepath)
-                print(f'                         chromepath={pathc}')
+                self.printa('debug', f'                         chromepath={pathc}')
                 try:
                     # replacement = "akl_roepstdlwoeproslP0weos".encode()
                     replacement = "akl_roepstdlwoeproslPOweos".encode()
@@ -326,26 +349,26 @@ class DriverFactory:
                                 fh.seek(-len(line), 1);
                                 newline = re.sub(b"cdc_.{22}", replacement, line);
                                 fh.write(newline);
-                                print("                         linha cdc_ encontrada e alterada com sucesso")
+                                self.printa('info', "                         linha cdc_ encontrada e alterada com sucesso")
                 except Exception as e:
-                    print(f'ERROR: no cdc: {e}')
+                    self.printa('error', f'ERROR: no cdc: {e}')
                 # print(f'criando driver pathc={pathc}')
 
                 try:
-                    print(f'                            criando driver pelo metodo 1')
+                    self.printa('info', f'                            criando driver pelo metodo 1')
                     driver = webdriver.Chrome(executable_path=f'{pathc}', chrome_options=chrome_options, desired_capabilities=capabilities)  # Optional argument, if not specified will search path.
 
                 except Exception as e:
-                    print(f'                               deu erro no metodo 1: {e}')
+                    self.printa('error', f'                               deu erro no metodo 1: {e}')
                     try:
-                        print(f'                            criando driver pelo metodo 2 com service')
+                        self.printa('info', f'                            criando driver pelo metodo 2 com service')
                         service = Service(executable_path=pathc, chrome_options=chrome_options, desired_capabilities=capabilities)
                         driver = webdriver.Chrome(service=service, options=chrome_options)  # Optional argument, if not specified will search path.
                     except Exception as e:
-                        print(f'                               deu erro no metodo 2: {e}')
+                        self.printa('critical', f'                               deu erro no metodo 2: {e}')
                         raise Exception(f'Agora lascou, deu erro tambem no metodo service')
 
-                print(f'                      CRIADO driver: {driver}')
+                self.printa('info', f'                      CRIADO driver: {driver}')
 
                 driver.set_page_load_timeout(set_page_load_timeout)
                 driver.implicitly_wait(implicitly_wait)

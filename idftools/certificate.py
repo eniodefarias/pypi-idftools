@@ -24,7 +24,6 @@ if os.name == 'nt':
     from cryptography.hazmat.primitives import hashes
     from cryptography.x509.oid import ExtensionOID
 
-
 class Certificate:
     def __init__(self, dir_certificado):
 
@@ -40,6 +39,21 @@ class Certificate:
         #     print(f'erro generator_json_wincertstore: {e}')
         #     return False
 
+    def printa(self, tipo='', msg=''):
+        msg = msg.replace('\n', '// ').replace('  ', ' ').replace('  ', ' ').replace('  ', ' ').replace('  ', ' ').replace('  ', ' ').replace('  ', ' ')
+        agora = datetime.datetime.today().strftime("%Y/%m/%d %H:%M:%S")
+        if tipo == 'error':
+            print(Fore.RED + f'{agora} | {tipo} | {msg}' + Style.RESET_ALL)
+        elif tipo == 'debug':
+            print(Fore.MAGENTA + f'{agora} | {tipo} | {msg}' + Style.RESET_ALL)
+        elif tipo == 'warning':
+            print(Fore.YELLOW + f'{agora} | {tipo} | {msg}' + Style.RESET_ALL)
+        elif tipo == 'info':
+            print(Fore.CYAN + f'{agora} | {tipo} | {msg}' + Style.RESET_ALL)
+        elif tipo == 'critical':
+            print(Back.RED + f'{agora} | {tipo} | {msg}' + Style.RESET_ALL)
+        else:
+            print(f'{agora} | {tipo} | {msg}')
 
     def somente_numeros(self, numerossujos):
         return re.sub('[^0-9]', '', str(numerossujos))
@@ -54,7 +68,7 @@ class Certificate:
     def generator_json_wincertstore(self, filename):
         userwin = os.getlogin().upper()
         pc = socket.gethostname().upper()
-        print(f'_____________________________________\n"{userwin}" iniciando mapeamento dos certificados digitais da maquina "{pc}"\n')
+        self.printa('info', f'_____________________________________\n"{userwin}" iniciando mapeamento dos certificados digitais da maquina "{pc}"\n')
         if os.name == 'nt':
             #f = open(filename, "w+")
             #f.close()
@@ -120,10 +134,10 @@ class Certificate:
                         cnpj = 'Error'
 
                     if len(list_Subjec) > 1 and len(list_Issuer) > 1 and cnpj != 'Error' and cnpj != 'Null':
-                        print(f'\n      CNPJ:"{cnpj}" =  adicionando "{cert.get_name()}" ao json ')
+                        self.printa('info', f'\n      CNPJ:"{cnpj}" =  adicionando "{cert.get_name()}" ao json ')
                         # print(cert.get_name())
-                        print("              Issuer: ", issuer)
-                        print("              Subject:", subject)
+                        self.printa('info', "              Issuer: ", issuer)
+                        self.printa('info', "              Subject:", subject)
 
                         # print('')
                         # FRIENDLY
@@ -207,7 +221,7 @@ class Certificate:
             # #####################################
 
 
-            print("This only works on a Windows System.")
+            self.printa('info', "This only works on a Windows System.")
             linha_final2 = '0001;ERROR: This only works on a Windows System.'
             with open(filename, 'w', encoding="utf-8") as file:
                 file.write('{}\n'.format(linha_final2))
@@ -220,7 +234,7 @@ class Certificate:
         #userwin=os.getlogin().upper()
         #pc=socket.gethostname().upper()
 
-        print(f'\n"{userwin}" terminou de coletar os Certificados digitais da maquina "{pc}" \n_____________________________________\n\n')
+        self.printa('info', f'\n"{userwin}" terminou de coletar os Certificados digitais da maquina "{pc}" \n_____________________________________\n\n')
 
         #time.sleep(3)
 
@@ -360,7 +374,7 @@ class Certificate:
             count += 1
 
         len_dict = len(dict_certificados)
-        print(f'len_dict: {len_dict}')
+        self.printa('debug', f'len_dict: {len_dict}')
 
         # print(dict_certificados)
 
@@ -369,12 +383,12 @@ class Certificate:
             f.close()
 
         for dict_da_vez in dict_certificados:
-            print(dict_da_vez)
+            self.printa('debug', dict_da_vez)
             # nome_dic = dict_da_vez
             diciionario = dict_certificados[dict_da_vez]
             # print(diciionario)
             len_list_dict = len(diciionario)
-            print(f'len_list_dict: {len_list_dict}')
+            self.printa('debug', f'len_list_dict: {len_list_dict}')
 
             requerente = ''
             emissor = ''
@@ -441,7 +455,7 @@ class Certificate:
             # print(f'requerente = {requerente}')
 
             padrao_json = '{"pattern":"https://*","filter":{' + emissor + ',' + requerente + '}}'
-            print(f'padrao_json: {padrao_json}')
+            self.printa('debug', f'padrao_json: {padrao_json}')
 
             leitura_json = json.loads(padrao_json)
             requerente_CN = leitura_json['filter']['SUBJECT']['CN']
@@ -454,11 +468,11 @@ class Certificate:
                 f.write(linha_final + '\n')
                 f.close()
             # print(f'requerente_CN: {requerente_CN}')
-            print(f'linha_final: {linha_final}')
+            self.printa('debug', f'linha_final: {linha_final}')
 
-            print('--------\n')
+            self.printa('debug', '--------\n')
 
-        print('\n\nfim')
+        self.printa('debug', '\n\nfim')
 
         # HINT: "ISSUER":{"CN":"AC ONLINE RFB v5", "O": "ICP-Brasil", "OU": "Secretaria da Receita Federal do Brasil - RFB"},
         #      "SUBJECT":{"CN":"M3 SISTEMAS DE INFORMATICA LTDA:07070596000145", "L": "GOVERNADOR VALADARES", "O": "ICP-Brasil"}
@@ -492,7 +506,7 @@ class Certificate:
                 winreg.CloseKey(winreg.HKEY_LOCAL_MACHINE)
 
         except FileNotFoundError:
-            print('Arquivo não encontrado!')
+            self.printa('error', 'Arquivo não encontrado!')
 
     def select_certificate(self, df):
         #df = pd.json_normalize(input_json)
@@ -569,7 +583,7 @@ class Certificate:
                                 #except FileNotFoundError:
                                 except Exception as e:
                                     err = f'{e}'.replace('\n', ' ')
-                                    print(f'Erro Open001 no certificado: {err}')
+                                    self.printa('error', f'Erro Open001 no certificado: {err}')
                                     certificado_status = 'Erro no certificado: ' + err
                                     #return 'Arquivo não encontrado!'
 
@@ -577,7 +591,7 @@ class Certificate:
                                 certificado_status = 'certificado Null'
         except Exception as e:
             err = f'{e}'.replace('\n', ' ')
-            print(f'Erro no certificado: {err}')
+            self.printa('error', f'Erro no certificado: {err}')
             certificado_status = 'Erro no certificado: ' + err
 
         return certificado_status
@@ -609,9 +623,9 @@ class Certificate:
 
             for linha in csv_list:
                     l_linha = linha.split(';')
-                    print(f'a1 - l_linha:{l_linha}')
+                    self.printa('debug', f'a1 - l_linha:{l_linha}')
                     comp_l_linha = len(l_linha)
-                    print(f'a2 - comp_l_linha:{comp_l_linha}')
+                    self.printa('debug', f'a2 - comp_l_linha:{comp_l_linha}')
                     if comp_l_linha > 0:
 
                         # numero_documento = l_linha[0]
@@ -623,13 +637,13 @@ class Certificate:
                             cnpj_linha = self.cpf11digits(l_linha[0])
                         else:
                             cnpj_linha = l_linha[0]
-                        print(f'cnpj_linha = {cnpj_linha}')
-                        print(f'idcert     = {idcert}')
+                        self.printa('debug', f'cnpj_linha = {cnpj_linha}')
+                        self.printa('debug', f'idcert     = {idcert}')
                         json_linha = l_linha[1]
-                        print(f'json_linha = {json_linha}')
+                        self.printa('debug', f'json_linha = {json_linha}')
 
                         if cnpj_linha == idcert:
-                            print(f'muito bem, achou o CNPJ {idcert} na lista de certificados!!!')
+                            self.printa('info', f'muito bem, achou o CNPJ {idcert} na lista de certificados!!!')
                             try:
                                 path = winreg.ConnectRegistry(None, winreg.HKEY_LOCAL_MACHINE)
                                 with winreg.OpenKey(path, sub_key, 0, winreg.KEY_ALL_ACCESS) as key:
@@ -643,14 +657,14 @@ class Certificate:
                                 with open(file_html, 'w', encoding="utf-8") as file:
                                     file.write('{}'.format(linha_html))
                                     file.close()
-                                print(f'excelente, configurou o reg com o certificado do CNPJ {idcert} !!!')
+                                self.printa('info', f'excelente, configurou o reg com o certificado do CNPJ {idcert} !!!')
                                 certificado_status = f'SUCESSO: {idcert}'
                                 certificado_status = True
                                 # return True
                                 break
                             except Exception as e:
                                 err = f'{e}'.replace('\n', ' ')
-                                print(f'Erro Open001 no certificado: {err}')
+                                self.printa('error', f'Erro Open001 no certificado: {err}')
                                 linha_html = f'<html><body><center><h1>erro certificado CNPJ: {cnpj_linha}</h1></center><hr><p>{err}</p><hr></body></html>'
                                 ffile_html = f'{self.dir_certificado}/html.html'
                                 file_html = os.path.abspath(ffile_html)
@@ -667,14 +681,14 @@ class Certificate:
                             certificado_status = False
                             #return False
 
-                        print(f'lendo linhas de certificados: {certificado_status}')
+                        self.printa('debug', f'lendo linhas de certificados: {certificado_status}')
             # else:
             #     certificado_status = f'ERRO: nao localizou o registro {idcert} instalado no Windows'
             #     raise Exception(f'{certificado_status}')
 
         except Exception as e:
             err = f'{e}'.replace('\n', ' ')
-            print(f'Erro no certificado: {err}')
+            self.printa('critical', f'Erro no certificado: {err}')
             certificado_status = 'ERRO no certificado: ' + err
             certificado_status = False
             # return False
@@ -701,7 +715,7 @@ class Certificate:
             if cnpj_r[i - 1:i] != str(dv % 10):
                 # print(f' {cnpj} não3 é CNPJ\n\n')
                 return False
-        print(f' {cnpj}  é CNPJ!!!!!!!!!\n\n')
+        self.printa('info', f' {cnpj}  é CNPJ!!!!!!!!!\n\n')
         return True
 
 
@@ -711,13 +725,13 @@ class Certificate:
         # numbers = str(numbers_x)
 
 
-        print('\n\nvalidando teste se é CPF')
+        self.printa('info', ('\n\nvalidando teste se é CPF')
         numbers = int(self.somente_numeros(numbers))
         #print(f'numbersA: "{numbers}"')
         numbers = self.cpf11digits(self.somente_numeros(numbers))
         #print(f'numbersB: "{numbers}"')
 
-        print(f'    verificando e validando se {numbers} é um cpf')
+        self.printa('info', (f'    verificando e validando se {numbers} é um cpf')
 
         #  Obtém os números do CPF e ignora outros caracteres
         cpf = [int(char) for char in numbers if char.isdigit()]
@@ -742,7 +756,7 @@ class Certificate:
                 # print(f' {numbers} não3 é CPF\n\n')
                 return False
 
-        print(f' {numbers} É CPF !!!!!\n\n')
+        self.printa('info', f' {numbers} É CPF !!!!!\n\n')
         return True
 
 
@@ -773,7 +787,7 @@ class Certificate:
             f = open(temp1, "w+")
             f.close()
             if self.test_if_exist(temp1):
-                print(f'temp1 {temp1} existe')
+                self.printa('debug', f'temp1 {temp1} existe')
             else:
                 raise Exception(f'temp1 {temp1} NÂO existe')
 
@@ -787,32 +801,32 @@ class Certificate:
             os.remove(temp)
 
         try:
-            print(f'primeiro verifica se o registro existe')
+            self.printa('info', f'primeiro verifica se o registro existe')
             # self.logger.debug('b2')
             key = winreg.HKEY_LOCAL_MACHINE
             reg = winreg.ConnectRegistry(None, key)
             k = winreg.OpenKey(reg, key_to_read)
             # self.logger.debug('b3')
-            print(f'registro lido: {k}')
+            self.printa('debug', f'registro lido: {k}')
 
             # self.logger.debug('b4')
             valuex = winreg.QueryValueEx(k, sub_key)
-            print(f'valuex: {valuex}')
-            print(f'\nOK. Registro já existe')
+            self.printa('debug', f'valuex: {valuex}')
+            self.printa('info', f'\nOK. Registro já existe')
             # criar = winreg.CreateKeyEx(k, sub_keyB, reserved=0, access=winreg.KEY_WRITE)  # criar = winreg.CreateKeyEx(k, sub_keyB, reserved=0, access=winreg.KEY_ALL_ACCESS)  # criar = winreg.CreateKeyEx(k, sub_keyB, reserved=1, access=winreg.REG_SZ)  # criar = winreg.CreateKeyEx(k, sub_keyB, reserved=1, access=winreg.KEY_ALL_ACCESS)
             # self.logger.debug('b5')
             erro_hkey = False
 
         except Exception as e:
             # self.logger.debug('b6')
-            print(f'erro registro não encontrado: {e}')
+            self.printa('error', f'erro registro não encontrado: {e}')
             erro_hkey = True
 
-        print(f'b7 - erro_hkey={erro_hkey}')
+        self.printa('debug', f'b7 - erro_hkey={erro_hkey}')
 
         if erro_hkey:
             try:
-                print(f'\nIniciando tentativa de criar o registro. È necessário ter permissão de ADMIN')
+                self.printa('info', f'\nIniciando tentativa de criar o registro. È necessário ter permissão de ADMIN')
                 # ASADMIN = 'asadmin'
                 # user = sys.argv[-1]
                 # userb = sys.argv[1:]
@@ -822,7 +836,7 @@ class Certificate:
 
                 script = full
                 paqms2 = f'-k "{raiz_reg}\\{key_to_read}" -s "{sub_key}" -t "REG_SZ" -v "0" -f "{temp}"'
-                print(f'paqms2:     {paqms2}      ')
+                self.printa('debug', f'paqms2:     {paqms2}      ')
                 params = ' '.join([paqms2])
 
                 # HINT: http://timgolden.me.uk/pywin32-docs/shell__ShellExecuteEx_meth.html
@@ -833,14 +847,14 @@ class Certificate:
                 rc = win32process.GetExitCodeProcess(procHandle)
                 f = open(temp)
                 lines = f.read()
-                print(f'lines: {lines}')
+                self.printa('debug', f'lines: {lines}')
                 f.close()
                 linhas = lines.replace('\n', ' ').strip('\n').strip(' ')
 
-                print(f'Resultado: {linhas}')
+                self.printa('info', f'Resultado: {linhas}')
 
             except Exception as e:
-                print(f'erro ao criar registro usando system: {e}')
+                self.printa('critical', f'erro ao criar registro usando system: {e}')
 
     def test_if_exist(self, file):
         from pathlib import Path
@@ -848,7 +862,7 @@ class Certificate:
 
         #path = Path(os.path.abspath("README.mdx"))
         path = Path(os.path.abspath(file))
-        print(f'path={path}')
+        self.printa('debug', f'path={path}')
 
         if path.exists():
             return True
