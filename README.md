@@ -50,6 +50,7 @@ opencv-python
 img2pdf
 xlsxwriter
 wheel
+colorama
 ```
 
 ### dica para instalar os pre-requirements.txt na mão
@@ -79,13 +80,27 @@ pip install --upgrade idftools
 ## importando
 
 ```python
-
-from modules_idftools import idftools
+#exemplo
+from idftools.driversfactory import DriverFactory
+from idftools.utilities import Utilities
+import os, sys, time
 
 # use as funções do seu pacote
-utilities.some_function()
-driversfactory.some_other_function()
-certificate.another_function()
+nome_robo_exec = 'teste-v1.0'
+arquivo_de_config = 'src/config.ini'
+self.util = Utilities(nome_robo_exec=nome_robo_exec, robo_pid_exec=os.getpid(), arquivo_de_config=arquivo_de_config)
+self.logger = self.util.pega_logger_atual()
+
+self.logger.info('Olá mundo')
+
+self.headless = False
+dir_download = 'TMP'
+driverfactory = DriverFactory()
+driver = driverfactory.create_driver(type='chrome', headless=self.headless, path_to_download=dir_download, install_extension=False, largura=1200, altura=900, kiosk=False, nome_robo_exec=sys.argv[0], robo_pid_exec=os.getpid(), logger=self.logger, scale_factor=0.8, posX=0, posY=0)
+driver.get('http://www.google.com.br')
+time.sleep(5)
+self.util.saindo_driver(driver=driver, logger=self.logger)
+
 ```
 
 ---
