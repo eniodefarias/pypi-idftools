@@ -1,3 +1,4 @@
+<a href="https://wakatime.com/badge/user/739793a6-a4fb-4d88-b1e6-f79a9182d930/project/0cb8b771-fac4-42f2-a37c-5d0ca1dbe60d"><img src="https://wakatime.com/badge/user/739793a6-a4fb-4d88-b1e6-f79a9182d930/project/0cb8b771-fac4-42f2-a37c-5d0ca1dbe60d.svg" alt="wakatime"></a>
 <p align="center">
   <img src="http://ideiadofuturo.com.br/img/logo_ideia.png" width="120" title="supervisão"  alt="Supervisao Contabilidade e Consultoria">  
 </p>
