@@ -25,9 +25,10 @@ class DriverFactory:
     #     self.create_driver(type, headless, None)
 
     # def create_driver(self, type, headless=False, path_to_download=None, install_extension=None, largura=1440, altura=900):
-    def create_driver(self, type, headless=False, path_to_download=None, install_extension=None, largura=800, altura=800, kiosk=False, nome_robo_exec='bot', robo_pid_exec='0', logger=None, cert_digital=False, path_cert_digital=None, senha_cert_digital=None, list_url_cert_digital=[], scale_factor=1):
+    def create_driver(self, type, headless=False, path_to_download='TMP', install_extension=None, largura=800, altura=800, kiosk=False, nome_robo_exec='bot', robo_pid_exec='0', logger=None, cert_digital=False, path_cert_digital=None, senha_cert_digital=None, list_url_cert_digital=[], scale_factor=1, set_page_load_timeout=45, implicitly_wait=2, posX=0, posY=0):
         try:
 
+            print('\n\n')
             # print(f'cert_digital={cert_digital}')
             # print(f'path_cert_digital={path_cert_digital}')
             # print(f'path_cert_digital={senha_cert_digital}')
@@ -150,7 +151,7 @@ class DriverFactory:
                         # self.logger.error(f'erro ao tentar abrir urls {list_url_cert_digital} com certificado digital')
                         print(f'erro ao tentar abrir urls {list_url_cert_digital} com certificado digital')
                 else:
-                    print('chrome normal')
+                    print('                      Iniciando webdriver chrome ')
                     # print('chrome 003')
                     # Configuração para ceitar qualquer certificados
                     # capabilities = DesiredCapabilities.CHROME.copy()
@@ -182,7 +183,8 @@ class DriverFactory:
                 # chrome_options.add_argument('window-size=800,800');
                 # chrome_options.add_argument('window-size=1000,900');
                 # chrome_options.add_argument(f'window-position=-{largura},1')
-                chrome_options.add_argument(f'window-position=0,0')
+                # chrome_options.add_argument(f'window-position=0,0')
+                chrome_options.add_argument(f'window-position={posX},{posY}')
                 chrome_options.add_argument(f'window-size={largura},{altura}')
 
                 if kiosk == True:
@@ -201,8 +203,9 @@ class DriverFactory:
                 chrome_options.add_argument('--no-sandbox')  # enio 30/10/2020
                 chrome_options.add_argument('--test-type=ui')  # enio 30/10/2020
 
-                chrome_options.add_argument('--force-device-scale-factor=1')
+                # chrome_options.add_argument('--force-device-scale-factor=3')
 
+                # print(f'scale_factor={scale_factor}')
                 chrome_options.add_argument(f'--force-device-scale-factor={scale_factor}')
 
                 chrome_options.add_argument('--dns-prefetch-disable')
@@ -239,17 +242,31 @@ class DriverFactory:
                 prefs["profile.password_manager_enabled"] = False
                 prefs["credentials_enable_service"] = False
 
-                prefs["download.default_directory"] = path_to_download
                 prefs["download.directory_upgrade"] = True
-                prefs["safebrowsing.enabled"] = True
 
-                if not path_to_download is None:
+                # if not path_to_download is None:
                     # print('chrome 006')
                     # print('create_driver: Iniciando chrome em path alternativo:' + path_to_download)
-                    prefs['download.default_directory'] = path_to_download
-                    prefs['download.prompt_for_download'] = False  # print('create_driver: chrome 007')
+
+                path_to_download = os.path.abspath(path_to_download)
+                try:
+                    os.makedirs(path_to_download)
+                except:
+                    pass
+                prefs['download.default_directory'] = path_to_download
+                prefs['download.prompt_for_download'] = False
+                print(f'                         path_to_download={path_to_download}')
 
                 # print('create_driver: chrome 008')
+
+                prefs["safebrowsing.enabled"] = True
+                emulation = {"deviceMetrics": {
+                    "width": largura,
+                    "height": altura,
+                    "scale": scale_factor,
+                    "pixelRatio": 1 }}
+                chrome_options.add_experimental_option("mobileEmulation", emulation)
+                # prefs['mobileEmulation'] = emulation
                 chrome_options.add_experimental_option('prefs', prefs)
 
                 # chromepath = os.path.abspath(config['drivers']['chrome_path'])
@@ -286,7 +303,7 @@ class DriverFactory:
                 # driver = webdriver.Chrome(executable_path=chromepath, chrome_options=chrome_options, desired_capabilities=capabilities)  # Optional argument, if not specified will search path.
 
                 chromepath = ChromeDriverManager().install()
-                print(f'chromepath: {chromepath}')
+                # print(f'                         chromepath: {chromepath}')
                 # time.sleep(1)
                 # comando_perl = f'perl -pi -e "s/cdc_/abc_/g" {chromepath}'
 
@@ -294,41 +311,45 @@ class DriverFactory:
                 # print(f'saida_comando: {saida_comando}')
 
                 pathc = os.path.abspath(chromepath)
-                print(f'pathc={pathc}')
+                print(f'                         chromepath={pathc}')
                 try:
                     # replacement = "akl_roepstdlwoeproslP0weos".encode()
                     replacement = "akl_roepstdlwoeproslPOweos".encode()
-                    print(f'replacement={replacement}')
+                    # print(f'                         replacement={replacement}')
                     # print(f'replacement: {replacement}')
                     with io.open(pathc, "r+b") as fh:
-                        print('dentro do io')
+                        # print('dentro do io')
                         for line in iter(lambda: fh.readline(), b""):
                             # print(f'dentro for line: ')
                             if b"cdc_" in line:
-                                print(f'dentro if cdc line:')
+                                # print(f'dentro if cdc line:')
                                 fh.seek(-len(line), 1);
                                 newline = re.sub(b"cdc_.{22}", replacement, line);
                                 fh.write(newline);
-                                print("linha cdc_ encontrada e alterada com sucesso")
+                                print("                         linha cdc_ encontrada e alterada com sucesso")
                 except Exception as e:
                     print(f'ERROR: no cdc: {e}')
-                print(f'criando driver pathc={pathc}')
+                # print(f'criando driver pathc={pathc}')
 
                 try:
-                    print(f'criando driver pelo metodo 1')
+                    print(f'                            criando driver pelo metodo 1')
                     driver = webdriver.Chrome(executable_path=f'{pathc}', chrome_options=chrome_options, desired_capabilities=capabilities)  # Optional argument, if not specified will search path.
 
                 except Exception as e:
-                    print(f'deu erro no metodo 1: {e}')
+                    print(f'                               deu erro no metodo 1: {e}')
                     try:
-                        print(f'criando driver pelo metodo 2 com service')
+                        print(f'                            criando driver pelo metodo 2 com service')
                         service = Service(executable_path=pathc, chrome_options=chrome_options, desired_capabilities=capabilities)
-                        driver = webdriver.Chrome(service=service)  # Optional argument, if not specified will search path.
+                        driver = webdriver.Chrome(service=service, options=chrome_options)  # Optional argument, if not specified will search path.
                     except Exception as e:
-                        print(f'deu erro no metodo 2: {e}')
+                        print(f'                               deu erro no metodo 2: {e}')
                         raise Exception(f'Agora lascou, deu erro tambem no metodo service')
 
-                print('depois driver')
+                print(f'                      CRIADO driver: {driver}')
+
+                driver.set_page_load_timeout(set_page_load_timeout)
+                driver.implicitly_wait(implicitly_wait)
+
                 # driver = uc.drivera
 
                 # driver.get('https://supervisao.com.vc/')
@@ -386,9 +407,12 @@ class DriverFactory:
                     # print('create_driver: chrome 012')
                 except Exception as e:
                     # print(f'create_driver: erro no if headless == True POST - {e}')
-                    print('')
+                    print('\n\n')
 
                 # print('create_driver: chrome 0013 vai para return driver')
+
+
+
                 return driver
 
             elif type == 'firefox':
@@ -405,5 +429,5 @@ class DriverFactory:
                     return driver
 
         except Exception as e:
-            print(f'create_driver: DEU erro ao criar driver {e}')
+            print(f'       create_driver: DEU erro ao criar driver {e}')
             print('')

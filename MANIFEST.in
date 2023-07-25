@@ -1,2 +1,4 @@
 include idftools/Roboto-Regular.ttf
 include idftools/logging.conf
+include 01-verify_registry_windows.exe
+include 02-create_new_registry_windows_runas.exe

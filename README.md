@@ -108,10 +108,7 @@ certificate.another_function()
 ```
 
 ```bash
-rm -rf dist/
-.venv/bin/python3 setup.py sdist bdist_wheel
-
-twine upload --skip-existing dist/*
+rm -rf dist/ ; .venv/bin/python3 setup.py sdist bdist_wheel ; twine upload --skip-existing dist/*
 ```
 
 

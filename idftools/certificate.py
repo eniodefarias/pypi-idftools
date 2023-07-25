@@ -27,6 +27,10 @@ if os.name == 'nt':
 
 class Certificate:
     def __init__(self, dir_certificado):
+
+        diretorio_local = os.path.dirname(os.path.abspath(__file__))
+        self.criar_registro_chrome_winreg(diretorio_local)
+
         self.dir_certificado = dir_certificado
         #self.generator_json_wincertstore('./certificate/certificate_json.txt')
         # try:
@@ -761,10 +765,26 @@ class Certificate:
         # pat = os.path.abspath(a)
         # dire = os.path.dirname(a)
         full = os.path.join(dire, '02-create_new_registry_windows_runas.exe')
-        temp1 = os.path.join(dire, 'temp.txt')
-        # self.logger.debug('b00 3 criar_registro_chrome_winreg')
-        temp = os.path.abspath(temp1)
-        # self.logger.debug('b1')
+
+        temp001 = 'TMP'
+
+        try:
+            temp1 = os.path.join(temp001, 'temp.txt')
+            f = open(temp1, "w+")
+            f.close()
+            if self.test_if_exist(temp1):
+                print(f'temp1 {temp1} existe')
+            else:
+                raise Exception(f'temp1 {temp1} NÂO existe')
+
+        except:
+            temp1 = os.path.join(dire, 'temp.txt')
+            f = open(temp1, "w+")
+            f.close()
+
+        finally:
+            temp = os.path.abspath(temp1)
+            os.remove(temp)
 
         try:
             print(f'primeiro verifica se o registro existe')
@@ -822,5 +842,18 @@ class Certificate:
             except Exception as e:
                 print(f'erro ao criar registro usando system: {e}')
 
+    def test_if_exist(self, file):
+        from pathlib import Path
+        import os
 
-#bot = Certificate()
+        #path = Path(os.path.abspath("README.mdx"))
+        path = Path(os.path.abspath(file))
+        print(f'path={path}')
+
+        if path.exists():
+            return True
+        else:
+            return False
+
+
+# bot = Certificate()
