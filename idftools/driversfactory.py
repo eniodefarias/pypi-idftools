@@ -14,6 +14,9 @@ import sys
 import os
 # import undetected_chromedriver as uc
 from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.firefox import GeckoDriverManager
+from selenium.webdriver.firefox.options import Options as OptionsFF
+from selenium.webdriver.firefox.service import Service as ServiceFF
 import datetime
 
 from colorama import Fore, Back, Style
@@ -50,6 +53,11 @@ class DriverFactory:
 
     def create_driver(self, type, headless=False, path_to_download='TMP', install_extension=None, largura=800, altura=800, kiosk=False, nome_robo_exec='bot', robo_pid_exec='0', logger=None, cert_digital=False, path_cert_digital=None, senha_cert_digital=None, list_url_cert_digital=[], scale_factor=1, set_page_load_timeout=45, implicitly_wait=2, posX=0, posY=0):
         try:
+            path_to_download = os.path.abspath(path_to_download)
+            try:
+                os.makedirs(path_to_download)
+            except:
+                pass
 
             print('\n\n')
             # print(f'cert_digital={cert_digital}')
@@ -271,11 +279,8 @@ class DriverFactory:
                     # print('chrome 006')
                     # print('create_driver: Iniciando chrome em path alternativo:' + path_to_download)
 
-                path_to_download = os.path.abspath(path_to_download)
-                try:
-                    os.makedirs(path_to_download)
-                except:
-                    pass
+
+
                 prefs['download.default_directory'] = path_to_download
                 prefs['download.prompt_for_download'] = False
                 self.printa('debug', f'                         path_to_download={path_to_download}')
@@ -439,17 +444,73 @@ class DriverFactory:
                 return driver
 
             elif type == 'firefox':
-                    #print('chrome 013')
-                    # firefoxpath = config['drivers']['firefox_path']
-                    firefoxpath = ''
-                    driver = webdriver.Firefox(firefoxpath)
-                    return driver
+                capabilities = {}
+                options = OptionsFF()
+
+                # capabilities = DesiredCapabilities.FIREFOX.copy()
+                capabilities["marionette"] = True  # para usar o protocolo Marionette
+                capabilities["log.level"] = "trace"  # para definir o nível de log
+                capabilities["moz:firefoxOptions"] = {}  # para definir opções específicas do Firefox
+
+
+                # options.add_extension("/home/user/my_extension.xpi")  # para adicionar uma extensão
+                # options.profile = "/home/user/my_profile"  # para usar um perfil existente
+
+
+                if headless == True:
+                    options.add_argument("--headless")
+                    # capabilities["moz:firefoxOptions"]["args"] = ["--headless"]
+
+                # firefoxpath = config['drivers']['firefox_path']
+
+
+
+                # options.set_preference("browser.download.dir", "/home/user/Downloads")
+
+                options.set_preference("browser.download.dir", path_to_download)
+                # options.merge_capabilities(capabilities)
+
+                firefoxpath = GeckoDriverManager().install()
+                pathc = os.path.abspath(firefoxpath)
+                self.printa('debug', f'                         firefoxpath={pathc}')
+                self.printa('debug', f'                         path_to_download={path_to_download}')
+
+
+
+                try:
+
+                    self.printa('info', f'                            criando driver firefox pelo metodo 1')
+                    # driver = webdriver.Chrome(executable_path=f'{pathc}', chrome_options=chrome_options, desired_capabilities=capabilities)  # Optional argument, if not specified will search path.
+                    driver = webdriver.Firefox(pathc, desired_capabilities=capabilities, options=options)
+                except Exception as e:
+                    self.printa('error', f'                              firefox deu erro no metodo 1: {e}')
+                    try:
+                        self.printa('info', f'                            criando driver firefox pelo metodo 2 com service')
+                        # service = Service(executable_path=pathc, chrome_options=chrome_options, desired_capabilities=capabilities)
+                        # driver = webdriver.Chrome(service=service, options=chrome_options)  # Optional argument, if not specified will search path.
+
+                        # service = ServiceFF(executable_path=pathc, desired_capabilities=capabilities)
+                        service = ServiceFF(executable_path=pathc)
+                        driver = webdriver.Firefox(service=service, options=options)
+
+                    except Exception as e:
+                        self.printa('critical', f'                              firefox deu erro no metodo 2: {e}')
+                        raise Exception(f'firefox: Agora lascou, deu erro tambem no metodo service: {e}')
+
+                self.printa('info', f'                      CRIADO firefox driver: {driver}')
+
+                # driver = webdriver.Firefox(pathc)
+                # driver.set_page_scale_factor(scale_factor)
+                driver.set_window_size(largura, altura)
+                driver.set_window_position(posX, posY)
+                driver.execute_script(f"document.body.style.zoom = '{scale_factor}'")
+                return driver
 
             elif type == 'phantomjs':
-                    # phantomjspath = config['drivers']['phantomjs_path']
-                    phantomjspath = ''
-                    driver = webdriver.PhantomJS(phantomjspath)
-                    return driver
+                # phantomjspath = config['drivers']['phantomjs_path']
+                phantomjspath = ''
+                driver = webdriver.PhantomJS(phantomjspath)
+                return driver
 
         except Exception as e:
             print(f'       create_driver: DEU erro ao criar driver {e}')

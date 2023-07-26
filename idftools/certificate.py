@@ -12,8 +12,12 @@ import time
 import json
 import re
 import subprocess
+import datetime
+from colorama import Fore, Back, Style
 
 if os.name == 'nt':
+    from colorama import just_fix_windows_console
+    just_fix_windows_console()
     from itertools import cycle
     import socket
     import winreg
@@ -723,8 +727,6 @@ class Certificate:
     def cpf_validate(self, numbers: str) -> bool:
 
         # numbers = str(numbers_x)
-
-
         self.printa('info', ('\n\nvalidando teste se é CPF')
         numbers = int(self.somente_numeros(numbers))
         #print(f'numbersA: "{numbers}"')
