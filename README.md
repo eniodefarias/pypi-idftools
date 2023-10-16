@@ -6,7 +6,8 @@
 
 # Ideia do Futuro - IdFtools
 
- - [https://pypi.org/project/idftools/](https://pypi.org/project/idftools/)
+ - [pypi](https://pypi.org/project/idftools/)
+ - [github](https://github.com/eniodefarias/pypi-idftools)
 
 ## instalação do python
 ### criando .venv para o python
@@ -27,7 +28,7 @@ C:\Users\%USERNAME%\AppData\Local\Programs\Python\Python39\python.exe -m venv .v
 ```bash    
 /home/$(whoami)/.pyenv/shims/python3 -m venv .venv
 ```
-## pre-requirements.txt
+## requirements.txt
 
 ```text
 webdriver_manager
@@ -76,14 +77,14 @@ pyautogui
 imp
 ```
 
-### dica para instalar os pre-requirements.txt na mão
+### dica para instalar os requirements.txt na mão
 #### usando o gitbash
 ```bash
-cat pre-requirements.txt| grep -v "#" |sort|uniq | xargs -n 1 .venv/Scripts/pip3.exe install; .venv/Scripts/pip3.exe --upgrade pip ; .venv/Scripts/python.exe -m pip install --upgrade pip
+cat equirements.txt| grep -v "#" |sort|uniq | xargs -n 1 .venv/Scripts/pip3.exe install; .venv/Scripts/pip3.exe --upgrade pip ; .venv/Scripts/python.exe -m pip install --upgrade pip
 ```
 #### usando o shell do linux
 ```bash
-cat pre-requirements.txt| grep -v "#" |sort|uniq | xargs -n 1 .venv/bin/pip install; .venv/bin/pip --upgrade pip ; .venv/bin/python3 -m pip install --upgrade pip
+cat requirements.txt| grep -v "#" |sort|uniq | xargs -n 1 .venv/bin/pip install; .venv/bin/pip --upgrade pip ; .venv/bin/python3 -m pip install --upgrade pip
 ```
 
 
@@ -249,6 +250,23 @@ set UPX= --ultra-brute --best --compress-icons#0 ; time .venv/Scripts/python.exe
 
 ---
 
+# links uteis
+ - https://coderslegacy.com/python/pyautogui-keyboard-automation/
+ - https://pyautogui.readthedocs.io/en/latest/quickstart.html
+ - https://automatetheboringstuff.com/2e/chapter20/
+ - https://www.bannerbear.com/blog/how-to-extract-images-from-a-video-using-ffmpeg/
+ - https://ottverse.com/create-video-from-images-using-ffmpeg/
+ - https://shotstack.io/learn/use-ffmpeg-to-convert-images-to-video/
+ - > https://codeigo.com/python/make-a-video-out-of-images/
+ - https://pyautogui.readthedocs.io/en/latest/mouse.html
+ - https://aoredordoburacotudoebeira.wordpress.com/?s=video
+ - https://crashlaker.github.io/2021/01/18/selenium_+_chromium_+_flash_+_vnc.html
+ - 
+
 <p align="center">
   <img src="http://www.ideiadofuturo.com.br/img/logo_ideia.png" width="120" title="ideia"  alt="ideia">  
 </p>
+
+
+
+
