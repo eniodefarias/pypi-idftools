@@ -84,3 +84,16 @@ importlib.util
 xfb
 keyboard==0.13.0
 inspect
+
+pathlib
+
+winreg
+win32com
+shell
+win32api
+win32con
+win32event
+win32process
+win32com
+shellcon
+colorama
