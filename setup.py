@@ -22,7 +22,7 @@ long_description = (this_directory / "README.md").read_text()
 # print(f'long_description={long_description}')
 
 setup(
-    version="0.1.98",
+    version="0.1.100",
     long_description=long_description,
     long_description_content_type='text/markdown',
     # install_requires=requirements,
