@@ -97,3 +97,6 @@ win32process
 win32com
 shellcon
 colorama
+get_chromedriver
+imageio
+Xlib

@@ -140,8 +140,8 @@ class Certificate:
                     if len(list_Subjec) > 1 and len(list_Issuer) > 1 and cnpj != 'Error' and cnpj != 'Null':
                         self.printa('info', f'\n      CNPJ:"{cnpj}" =  adicionando "{cert.get_name()}" ao json ')
                         # print(cert.get_name())
-                        self.printa('info', "              Issuer: ", issuer)
-                        self.printa('info', "              Subject:", subject)
+                        self.printa('info', f"              Issuer: {issuer}")
+                        self.printa('info', f"              Subject: {subject}")
 
                         # print('')
                         # FRIENDLY
@@ -387,7 +387,7 @@ class Certificate:
             f.close()
 
         for dict_da_vez in dict_certificados:
-            self.printa('debug', dict_da_vez)
+            self.printa('debug', f'{dict_da_vez}')
             # nome_dic = dict_da_vez
             diciionario = dict_certificados[dict_da_vez]
             # print(diciionario)
@@ -725,15 +725,15 @@ class Certificate:
 
     # def cpf_validate(self, numbers_x):
     def cpf_validate(self, numbers: str) -> bool:
-
+        print(f'numbers={numbers}')
         # numbers = str(numbers_x)
-        self.printa('info', ('\n\nvalidando teste se é CPF')
+        self.printa('info', '\n\nvalidando teste se é CPF')
         numbers = int(self.somente_numeros(numbers))
         #print(f'numbersA: "{numbers}"')
         numbers = self.cpf11digits(self.somente_numeros(numbers))
         #print(f'numbersB: "{numbers}"')
 
-        self.printa('info', (f'    verificando e validando se {numbers} é um cpf')
+        self.printa('info', f'    verificando e validando se {numbers} é um cpf')
 
         #  Obtém os números do CPF e ignora outros caracteres
         cpf = [int(char) for char in numbers if char.isdigit()]

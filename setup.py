@@ -22,7 +22,7 @@ long_description = (this_directory / "README.md").read_text()
 # print(f'long_description={long_description}')
 
 setup(
-    version="0.1.92",
+    version="0.1.98",
     long_description=long_description,
     long_description_content_type='text/markdown',
     # install_requires=requirements,
@@ -40,7 +40,7 @@ setup(
     # data_files=[('', ['requirements.txt'])],
     # data_files=[('', [''])],
     include_package_data=True,
-    package_data={'idftools': ['idftools/requirements.tx', 'idftools/Roboto-Regular.ttf', 'idftools/logging.conf', 'idftools/01-verify_registry_windows.exe', 'idftools/02-create_new_registry_windows_runas.exe']}
+    package_data={'idftools': ['idftools/requirements.txt', 'idftools/Roboto-Regular.ttf', 'idftools/logging.conf', 'idftools/01-verify_registry_windows.exe', 'idftools/02-create_new_registry_windows_runas.exe']}
 )
 
 
