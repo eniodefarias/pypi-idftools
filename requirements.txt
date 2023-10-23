@@ -100,3 +100,5 @@ colorama
 get_chromedriver
 imageio
 Xlib
+
+xml
